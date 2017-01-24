@@ -10,7 +10,7 @@ to do anything else, although I appreciate attribution.
 
 #### <a name="other_libs"></a> Are there other single-file public-domain/open source libraries with minimal dependencies out there?
 
-[Yes.](https://github.com/nothings/stb/blob/master/docs/other_libs.md)
+[Yes.](https://github.com/nothings/single_file_libs)
 
 #### If I wrap an stb library in a new library, does the new library have to be public domain?
 
@@ -68,7 +68,7 @@ No, they are just the initials for my name, Sean T. Barrett.
 This was not chosen out of egomania, but as a moderately sane
 way of namespacing the filenames and source function names.
 
-#### Will you add more image types to stb_image.c?
+#### Will you add more image types to stb_image.h?
 
 If people submit them, I generally add them, but the goal of stb_image
 is less for applications like image viewer apps (which need to support

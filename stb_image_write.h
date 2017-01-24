@@ -1,4 +1,4 @@
-/* stb_image_write - v1.01 - public domain - http://nothings.org/stb/stb_image_write.h
+/* stb_image_write - v1.03 - public domain - http://nothings.org/stb/stb_image_write.h
    writes out PNG/BMP/TGA images to C stdio - Sean Barrett 2010-2015
                                      no warranty implied; use at your own risk
 
@@ -102,12 +102,14 @@ CREDITS:
       Sergio Gonzalez
       Jonas Karlsson
       Filip Wasil
+      Thatcher Ulrich
+      github:poppolopoppo
       
 LICENSE
 
-This software is in the public domain. Where that dedication is not
-recognized, you are granted a perpetual, irrevocable license to copy,
-distribute, and modify this file as you see fit.
+This software is dual-licensed to the public domain and under the following
+license: you are granted a perpetual, irrevocable license to copy, modify,
+publish, and distribute this file as you see fit.
 
 */
 
@@ -474,7 +476,6 @@ int stbi_write_tga(char const *filename, int x, int y, int comp, const void *dat
 // *************************************************************************************************
 // Radiance RGBE HDR writer
 // by Baldur Karlsson
-#ifndef STBI_WRITE_NO_STDIO
 
 #define stbiw__max(a, b)  ((a) > (b) ? (a) : (b))
 
@@ -629,6 +630,7 @@ int stbi_write_hdr_to_func(stbi_write_func *func, void *context, int x, int y, i
    return stbi_write_hdr_core(&s, x, y, comp, (float *) data);
 }
 
+#ifndef STBI_WRITE_NO_STDIO
 int stbi_write_hdr(char const *filename, int x, int y, int comp, const float *data)
 {
    stbi__write_context s;
@@ -736,7 +738,7 @@ unsigned char * stbi_zlib_compress(unsigned char *data, int data_len, int *out_l
    unsigned int bitbuf=0;
    int i,j, bitcount=0;
    unsigned char *out = NULL;
-   unsigned char **hash_table[stbiw__ZHASH]; // 64KB on the stack!
+   unsigned char ***hash_table = (unsigned char***) STBIW_MALLOC(stbiw__ZHASH * sizeof(char**));
    if (quality < 5) quality = 5;
 
    stbiw__sbpush(out, 0x78);   // DEFLATE 32K window
@@ -808,6 +810,7 @@ unsigned char * stbi_zlib_compress(unsigned char *data, int data_len, int *out_l
 
    for (i=0; i < stbiw__ZHASH; ++i)
       (void) stbiw__sbfree(hash_table[i]);
+   STBIW_FREE(hash_table);
 
    {
       // compute adler32 on input
@@ -1015,6 +1018,8 @@ STBIWDEF int stbi_write_png_to_func(stbi_write_func *func, void *context, int x,
 #endif // STB_IMAGE_WRITE_IMPLEMENTATION
 
 /* Revision history
+      1.02 (2016-04-02)
+             avoid allocating large structures on the stack
       1.01 (2016-01-16)
              STBIW_REALLOC_SIZED: support allocators with no realloc support
              avoid race-condition in crc initialization

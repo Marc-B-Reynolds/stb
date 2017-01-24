@@ -1,12 +1,12 @@
-// stb_leakcheck.h - v0.2 - quick & dirty malloc leak-checking - public domain
+// stb_leakcheck.h - v0.3 - quick & dirty malloc leak-checking - public domain
 // LICENSE
 //
-//   This software is in the public domain. Where that dedication is not
-//   recognized, you are granted a perpetual, irrevocable license to copy,
-//   distribute, and modify this file as you see fit.
+//   This software is dual-licensed to the public domain and under the following
+//   license: you are granted a perpetual, irrevocable license to copy, modify,
+//   publish, and distribute this file as you see fit.
 
 #ifdef STB_LEAKCHECK_IMPLEMENTATION
-#undef STB_LEAKCHECK_IMPLEMENTATION // don't implenment more than once
+#undef STB_LEAKCHECK_IMPLEMENTATION // don't implement more than once
 
 // if we've already included leakcheck before, undefine the macros
 #ifdef malloc
@@ -95,14 +95,14 @@ void stb_leakcheck_dumpmem(void)
    stb_leakcheck_malloc_info *mi = mi_head;
    while (mi) {
       if ((ptrdiff_t) mi->size >= 0)
-         printf("LEAKED: %s (%4d): %8z bytes at %p\n", mi->file, mi->line, mi->size, mi+1);
+         printf("LEAKED: %s (%4d): %8d bytes at %p\n", mi->file, mi->line, (int) mi->size, mi+1);
       mi = mi->next;
    }
    #ifdef STB_LEAKCHECK_SHOWALL
    mi = mi_head;
    while (mi) {
       if ((ptrdiff_t) mi->size < 0)
-         printf("FREED : %s (%4d): %8z bytes at %p\n", mi->file, mi->line, ~mi->size, mi+1);
+         printf("FREED : %s (%4d): %8d bytes at %p\n", mi->file, mi->line, (int) ~mi->size, mi+1);
       mi = mi->next;
    }
    #endif

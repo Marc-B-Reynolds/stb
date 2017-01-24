@@ -1,4 +1,4 @@
-// stb_tilemap_editor.h - v0.37 - Sean Barrett - http://nothings.org/stb
+// stb_tilemap_editor.h - v0.38 - Sean Barrett - http://nothings.org/stb
 // placed in the public domain - not copyrighted - first released 2014-09
 //
 // Embeddable tilemap editor for C/C++
@@ -275,6 +275,7 @@
 //   either approach allows cut&pasting between levels.)
 //
 // REVISION HISTORY
+//   0.38  fix warning
 //   0.37  fix warning
 //   0.36  minor compiler support
 //   0.35  layername button changes
@@ -316,9 +317,9 @@
 //
 // LICENSE
 //
-//   This software is in the public domain. Where that dedication is not
-//   recognized, you are granted a perpetual, irrevocable license to copy,
-//   distribute, and modify this file as you see fit.
+//   This software is dual-licensed to the public domain and under the following
+//   license: you are granted a perpetual, irrevocable license to copy, modify,
+//   publish, and distribute this file as you see fit.
 
 
 
@@ -3356,7 +3357,7 @@ static void stbte__toolbar(stbte_tilemap *tm, int x0, int y0, int w, int h)
 
 #define STBTE__TEXTCOLOR(n)  stbte__color_table[n][STBTE__text][STBTE__idle]
 
-static int stbte__info_value(char *label, int x, int y, int val, int digits, int id)
+static int stbte__info_value(const char *label, int x, int y, int val, int digits, int id)
 {
    if (stbte__ui.event == STBTE__paint) {
       int off = 9-stbte__get_char_width(label[0]);
